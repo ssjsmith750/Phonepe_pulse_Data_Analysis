@@ -40,7 +40,8 @@ quarter=int(Quarter)
 Districtwise_MapTransaction=Map_Transaction_Table_df.loc[(Map_Transaction_Table_df['Year'] == year ) & (Map_Transaction_Table_df['Quarter']==quarter) ].copy()
 Statewise_Transaction=Districtwise_MapTransaction[Districtwise_MapTransaction["State"] == "india"]
 Districtwise_MapTransaction.drop(Districtwise_MapTransaction.index[(Districtwise_MapTransaction["State"] == "india")],axis=0,inplace=True)
-# Dynamic Scattergeo Data Generation
+
+# Districtwise_MapTransaction
 Districtwise_MapTransaction = Districtwise_MapTransaction.sort_values(by=['Place_Name'], ascending=False)
 Districts_GeoLocation = Districts_GeoLocation.sort_values(by=['District'], ascending=False) 
 Total_Amount=[]
@@ -52,7 +53,8 @@ for i in Districtwise_MapTransaction ['Total_Transactions_count']:
     Total_Transaction.append(i)
 Districts_GeoLocation['Total_Transactions']=Total_Transaction
 Districts_GeoLocation['Year_Quarter']=str(year)+'-Q'+str(quarter)
-# Dynamic Coropleth
+
+# Map_IndianStatesTotal_Users_df
 Map_IndianStatesTotal_Users_df = Map_IndianStatesTotal_Users_df.sort_values(by=['state'], ascending=False)
 Statewise_Transaction = Statewise_Transaction.sort_values(by=['Place_Name'], ascending=False)
 Total_Amount=[]
