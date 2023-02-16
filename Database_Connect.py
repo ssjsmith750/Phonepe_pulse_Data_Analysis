@@ -3,7 +3,7 @@ import pandas as pd
 PhonePe=mysql.connector.connect(host='localhost',
                         database='phonepe',
                         user='root',
-                        password='2668')
+                        password='*****')
 mycursor = PhonePe.cursor()
 
 
