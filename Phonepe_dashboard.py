@@ -3,11 +3,12 @@ import plotly.express as px
 import streamlit as st 
 import mysql.connector
 import plotly.graph_objects as go
-# MYSQL Database Connection
+#import matplotlib as plt
+# Database Connection
 PhonePe=mysql.connector.connect(host='localhost',
                         database='phonepe',
                         user='root',
-                        password='*************')
+                        password='2668')
 mycursor = PhonePe.cursor()
 st.title('PhonePe Pulse and User Data Analysis(2018-2022):signal_strength:')
 st.write("### :blue[PHONEPE TASK]")
@@ -27,8 +28,6 @@ Aggregated_User_Summary_df=pd.read_sql(query, con = PhonePe)
 query = 'select * from State_Geo_Location_Data'
 State_Geo_Location_Data_df=pd.read_sql(query, con = PhonePe)
 
-st.title(':red[PhonePe Pulse Data Analysis(2018-2022):signal_strength:]')
-st.write("### **:blue[PhonePe India]**")
 Year = st.selectbox(
     'Please select the Year',
     ('2018', '2019', '2020','2021','2022'))
@@ -86,8 +85,8 @@ State_Geo_Location_Data_df['Year_Quarter']=str(year)+'-Q'+str(quarter)
 fig=px.scatter_geo(State_Geo_Location_Data_df,
                    lon=State_Geo_Location_Data_df['Longitude'],
                    lat=State_Geo_Location_Data_df['Latitude'],                                
-                   text = State_Geo_Location_Data_df['code'], #It will display district names on map
-                   hover_name="state", 
+                   text = State_Geo_Location_Data_df['code'], 
+                   hover_name="Total_Transactions", 
                    hover_data=["Registered_Users",'Total_Amount',"Total_Transactions","Year_Quarter"],
                    )
 fig.update_traces(marker=dict(color="white" ,size=0.3))
@@ -99,12 +98,18 @@ fig1=px.scatter_geo(Districts_GeoLocation,
                    lat=Districts_GeoLocation['Latitude'],
                    color=Districts_GeoLocation['col'],
                    size=Districts_GeoLocation['Total_Transactions'],     
-                   #text = Districts_GeoLocation['District'], #It will display district names on map
+             
                    hover_name="District", 
                    hover_data=["State", "Total_Amount","Total_Transactions","Year_Quarter"],
                    title='District',
-                   size_max=22,)
-fig1.update_traces(marker=dict(color="rebeccapurple" ,line_width=1))    
+                   size_max=33,
+                   #animation_frame='Total_Transactions',
+                   #projection='kavrayskiy7',
+                   )
+
+fig1.update_traces(marker=dict(color=(0, 12) ,line_width=1))
+ 
+#ax = plt.axes(projection ='3d')
 #coropleth mapping india
 fig_ch = px.choropleth(
                 Map_IndianStatesTotal_Users_df,
@@ -114,6 +119,7 @@ fig_ch = px.choropleth(
                 color="Total_Transactions",                                       
                 )
 fig_ch.update_geos(fitbounds="locations", visible=False,)
+fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})  
 #combining districts states and coropleth
 fig_ch.add_trace( fig.data[0])
 fig_ch.add_trace(fig1.data[0])
@@ -121,10 +127,10 @@ st.plotly_chart(fig_ch)
 st.info('**:blue[The above India map shows the Total Transactions of PhonePe in both state wide and District wide.]**')
 
 
-#####################################################  MAP 1 ########################################################
+#####################################################  MAP ########################################################
 
 st.write('# :orange[USERS DATA ANALYSIS ]')
-st.write('### :orange[Brand Share] ')
+st.write('### :orange[Mobile Brands] ')
 state = st.selectbox(
     'Please select the State',
     ('india','andaman-&-nicobar-islands', 'andhra-pradesh', 'arunachal-pradesh',
@@ -150,6 +156,6 @@ b['brand']=x
 br=b['Registered_Users'].sum()
 labels = b['brand']
 values = b['Registered_Users']
-fig3 = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.4,customdata=labels,textinfo='label+percent',texttemplate='%{label}<br>%{percent:1%f}',insidetextorientation='horizontal',textfont=dict(color='#000000'),marker_colors=px.colors.qualitative.Prism)])
+fig3 = go.Figure(data=[go.Pie(labels=labels, values=values, hole=.4,customdata=labels,textinfo='label+percent',texttemplate='%{label}<br>%{percent:1%f}',insidetextorientation='horizontal',textfont=dict(color='#000000'),marker_colors=px.colors.qualitative.Dark24)])
 st.plotly_chart(fig3)
-st.info('**:orange[The above donut Graph and below bar graph shows how the users are registered through different brans in india. which brand has more users  less users  ]**')
+st.info('**:orange[The above donut Graph shows how the users are registered through different brand in india. which brand has more users and less users  ]**')
