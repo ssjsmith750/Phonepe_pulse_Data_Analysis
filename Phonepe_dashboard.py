@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 PhonePe=mysql.connector.connect(host='localhost',
                         database='phonepe',
                         user='root',
-                        password='2668')
+                        password='**********')
 mycursor = PhonePe.cursor()
 st.title('PhonePe Pulse and User Data Analysis(2018-2022):signal_strength:')
 st.write("### :blue[PHONEPE TASK]")
