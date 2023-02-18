@@ -3,13 +3,21 @@ import plotly.express as px
 import streamlit as st 
 import mysql.connector
 import plotly.graph_objects as go
+from PIL import Image
 #import matplotlib as plt
 # Database Connection
 PhonePe=mysql.connector.connect(host='localhost',
                         database='phonepe',
                         user='root',
-                        password='**********')
+                        password='2668')
 mycursor = PhonePe.cursor()
+
+################################ Streamlit App Creation ###################################
+
+img = Image.open('phonepepulse.jpg')
+col1, col2, col3, col4 = st.columns([0.2, 5, 0.2,0.1])
+col2.image(img, width=500)
+
 st.title('PhonePe Pulse and User Data Analysis(2018-2022):signal_strength:')
 st.write("### :blue[PHONEPE TASK]")
 # Retrieve Data From Database
